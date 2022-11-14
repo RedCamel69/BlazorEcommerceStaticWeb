@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
-using BlazorApp.Shared;
+using BlazorEcommerceStaticWebApp.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
