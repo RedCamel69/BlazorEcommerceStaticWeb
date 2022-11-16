@@ -18,9 +18,12 @@ else
 
 @if(exception != null){
     if (exception.Message != null){
-        <h2>@exception.Message</h2>
+       <h2>@exception.Message</h2>
     }
-    
+    if (exception.InnerException != null)
+    {
+        <h2>@exception.InnerException.Message</h2>
+    }
     
 }
   
