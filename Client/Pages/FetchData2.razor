@@ -46,6 +46,8 @@ else
             students = await Http.GetFromJsonAsync<Student[]>("/api/Students") ?? new Student[] { };
 
             connection = await Http.GetStringAsync("/api/utils") ?? String.Empty;
+
+            Console.WriteLine(Environment.GetEnvironmentVariable("HOME") ?? "");
         }
         catch (Exception ex)
         {
