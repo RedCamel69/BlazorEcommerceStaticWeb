@@ -1,3 +1,4 @@
+using BlazorEcommerceStaticWebApp.Shared;
 using Microsoft.EntityFrameworkCore;
 using System;
 

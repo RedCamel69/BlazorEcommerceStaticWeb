@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Linq;
 
 using BlazorEcommerceStaticWebApp.Api.Data;
+using BlazorEcommerceStaticWebApp.Shared;
 
 namespace BlazorEcommerceStaticWebApp.Api;
 

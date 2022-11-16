@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BlazorEcommerceStaticWebApp.Api.Data;
+namespace BlazorEcommerceStaticWebApp.Shared;
 
 public class Student {
     public int StudentId { get; set; }
