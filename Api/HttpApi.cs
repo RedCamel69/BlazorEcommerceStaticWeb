@@ -74,5 +74,19 @@ public class HttpApi
 
         return new OkResult();
     }
+
+
+    [FunctionName("utils")]
+    public IActionResult GetConnectionString(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "utils")] HttpRequest req,
+        ILogger log)
+    {
+
+        log.LogInformation("C# HTTP GET trigger function processed api/utils request.");
+
+        var conn = Utils.GetSQLiteConnectionString();
+
+        return new OkObjectResult(conn);
+    }
 }
 

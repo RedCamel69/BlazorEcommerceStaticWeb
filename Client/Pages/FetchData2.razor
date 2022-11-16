@@ -1,5 +1,6 @@
 ﻿@page "/fetchdata2"
-@using BlazorEcommerceStaticWebApp.Shared
+@using BlazorEcommerceStaticWebApp.Shared;
+
 @inject HttpClient Http
 
 <h1>Students</h1>
@@ -27,6 +28,7 @@ else
     
 }
   
+@connection
 
 @code {
 
@@ -34,11 +36,15 @@ else
 
     private Exception? exception;
 
+    private string? connection;
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
             students = await Http.GetFromJsonAsync<Student[]>("/api/Students") ?? new Student[] { };
+
+            connection = await Http.GetStringAsync("/api/utils") ?? String.Empty;
         }
         catch (Exception ex)
         {
