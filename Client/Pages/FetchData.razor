@@ -1,5 +1,6 @@
 ﻿@page "/fetchdata"
 @using BlazorEcommerceStaticWebApp.Shared
+
 @inject HttpClient Http
 
 <h1>Weather forecast</h1>
@@ -34,20 +35,31 @@ else
         </tbody>
     </table>
 
-    @if (addresses.Count < 1){
+   @* @if (addresses.Count < 1){
         <h1>No addresses!</h1>
     }
     else{
         foreach(Address a in addresses){
             <h3>@a.City</h3>
         }
+    }*@
+
+   @if (students.Length < 1){
+        <h1>No addresses!</h1>
     }
-}
+    else{
+        foreach(Student s in students){
+            <h3>@s.School</h3>
+        }
+    }
+  }
 
 @code {
     private WeatherForecast[] forecasts = new WeatherForecast[]{};
 
-    private List<Address> addresses = new List<Address>();
+    private Student[] students = new Student[] { };
+
+    //private List<Address> addresses = new List<Address>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,7 +67,11 @@ else
         {
             forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("/api/WeatherForecast") ?? new WeatherForecast[]{};
 
-            addresses = await Http.GetFromJsonAsync<List<Address>>("/api/Addresses") ?? new List<Address>() { };
+            students = await Http.GetFromJsonAsync<Student[]>("/api/Students") ?? new Student[]{ };
+
+          //  addresses = await Http.GetFromJsonAsync<List<Address>>("/api/Addresses") ?? new List<Address>() { };
+
+           // var res = await Http.GetFromJsonAsync<List<Movie>>("/api/ListMovies") ?? new List<Movie>() { };
         }
         catch (Exception ex)
         {
