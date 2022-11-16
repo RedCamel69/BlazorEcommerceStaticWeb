@@ -1,0 +1,46 @@
+﻿@page "/fetchdata2"
+@using BlazorEcommerceStaticWebApp.Shared
+@inject HttpClient Http
+
+<h1>Students</h1>
+
+@if (students.Length < 1)
+{
+    <h1>No students!</h1>
+}
+else
+{
+    foreach (Student s in students)
+    {
+        <h3>@s.School</h3>
+    }
+}
+
+@if(exception != null){
+    if (exception.Message != null){
+        <h2>@exception.Message</h2>
+    }
+    
+    
+}
+  
+
+@code {
+
+    private Student[] students = new Student[] { };
+
+    private Exception? exception;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            students = await Http.GetFromJsonAsync<Student[]>("/api/Students") ?? new Student[] { };
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+            Console.WriteLine(ex.ToString());
+        }
+    }
+}
