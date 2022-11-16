@@ -39,7 +39,7 @@ namespace BlazorEcommerceStaticWebApp.Api
             {
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 {
-                    options.UseSqlite(Azure_DBPath);
+                    options.UseSqlite($"Data Source = {Azure_DBPath}");
                 });
             }
         }
