@@ -13,7 +13,7 @@ namespace BlazorEcommerceStaticWebApp.Api
     {
         const string DevEnvValue = "Development";
         const string DBPath = "school.db";
-        public const string Azure_DBPath = "D:/home/school.db";
+        public const string Azure_DBPath = "D:\\home\\school.db";
 
         private static void CopyDb()
         {
