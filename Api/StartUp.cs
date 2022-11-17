@@ -41,7 +41,7 @@ namespace BlazorEcommerceStaticWebApp.Api
             {
                 builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(
                     (s, o) => o
-                    .UseSqlite("Data Source = D:/home/school.db")
+                    .UseSqlite("Data Source = D:\\home\\school.db")
                     .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()));
                 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 //{
