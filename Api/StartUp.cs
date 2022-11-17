@@ -22,34 +22,34 @@ namespace BlazorEcommerceStaticWebApp.Api
         }
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            bool isDevEnv = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == DevEnvValue ? true : false;
+            //bool isDevEnv = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == DevEnvValue ? true : false;
 
-            if(!isDevEnv && !File.Exists(Azure_DBPath))
-            {
-                CopyDb();
-            }
+            //if(!isDevEnv && !File.Exists(Azure_DBPath))
+            //{
+            //    CopyDb();
+            //}
 
-            if (isDevEnv)
-            {
+           // if (isDevEnv)
+           // {
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     Console.WriteLine("Dev dbContext");
                     options.UseSqlite(Utils.GetSQLiteConnectionString());
                 });
-            }
-            else
-            {
-                builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(
-                    (s, o) => o
-                    .UseSqlite("Data Source = school.db")
-                    //.UseSqlite("Data Source = D:\\home\\school.db")
-                    .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()));
-                //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                //{
-                //    Console.WriteLine("Azure dbContext");
-                //    options.UseSqlite($"Data Source = {(Azure_DBPath)}");
-                //});
-            }
+            //}
+            //else
+            //{
+            //    builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(
+            //        (s, o) => o
+            //        .UseSqlite("Data Source = school.db")
+            //        //.UseSqlite("Data Source = D:\\home\\school.db")
+            //        .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()));
+            //    //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //    //{
+            //    //    Console.WriteLine("Azure dbContext");
+            //    //    options.UseSqlite($"Data Source = {(Azure_DBPath)}");
+            //    //});
+            //}
         }
 
         public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
