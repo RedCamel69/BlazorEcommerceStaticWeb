@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using BlazorEcommerceStaticWebApp.Api.Data;
 using System.IO;
 using System;
+using Microsoft.Extensions.Logging;
 
 [assembly: FunctionsStartup(typeof(BlazorEcommerceStaticWebApp.Api.StartUp))]
 namespace BlazorEcommerceStaticWebApp.Api
@@ -32,15 +33,21 @@ namespace BlazorEcommerceStaticWebApp.Api
             {
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 {
+                    Console.WriteLine("Dev dbContext");
                     options.UseSqlite(Utils.GetSQLiteConnectionString());
                 });
             }
             else
             {
-                builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseSqlite($"Data Source = {Azure_DBPath}");
-                });
+                builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(
+                    (s, o) => o
+                    .UseSqlite($"Data Source = {(Azure_DBPath)}")
+                    .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()));
+                //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                //{
+                //    Console.WriteLine("Azure dbContext");
+                //    options.UseSqlite($"Data Source = {(Azure_DBPath)}");
+                //});
             }
         }
 
