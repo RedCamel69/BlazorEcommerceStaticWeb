@@ -27,7 +27,7 @@ namespace BlazorEcommerceStaticWebApp.Api
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {               
                 //options.UseSqlite(Utils.GetSQLiteConnectionString());
-                options.UseSqlite("Data source = C:\\home\\site\\wwwroot\\school.db");
+                options.UseSqlite("Data source = D:\\home\\site\\wwwroot\\school.db");
             });
 
             //    var s = Utils.GetSQLiteConnectionString();
