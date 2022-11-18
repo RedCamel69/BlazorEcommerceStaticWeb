@@ -16,12 +16,12 @@ namespace BlazorEcommerceStaticWebApp.Api;
 
 public class HttpApi
 {
-    //private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    //public HttpApi(ApplicationDbContext context)
-    //{
-    //    _context = context;
-    //}
+    public HttpApi(ApplicationDbContext context)
+    {
+        _context = context;
+    }
 
     //[FunctionName("HttpApi")]
     //public static async Task<IActionResult> Run(
@@ -43,18 +43,18 @@ public class HttpApi
     //    return new OkObjectResult(responseMessage);
     //}
 
-    //[FunctionName("students")]
-    //public IActionResult GetStudents(
-    //    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "students")] HttpRequest req,
-    //    ILogger log)
-    //{
+    [FunctionName("students")]
+    public IActionResult GetStudents(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "students")] HttpRequest req,
+        ILogger log)
+    {
 
-    //    log.LogInformation("C# HTTP GET trigger function processed api/students request.");
+        log.LogInformation("C# HTTP GET trigger function processed api/students request.");
 
-    //    var studentsArray = _context.Students.ToArray();
+        var studentsArray = _context.Students.ToArray();
 
-    //    return new OkObjectResult(studentsArray);
-    //}
+        return new OkObjectResult(studentsArray);
+    }
 
     // [FunctionName(nameof(PostStudent))]
     //public async Task<IActionResult> PostStudent(

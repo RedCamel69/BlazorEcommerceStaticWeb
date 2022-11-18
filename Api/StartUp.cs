@@ -24,26 +24,30 @@ namespace BlazorEcommerceStaticWebApp.Api
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {               
+                options.UseSqlite(Utils.GetSQLiteConnectionString());
+            });
 
-        //    var s = Utils.GetSQLiteConnectionString();
+            //    var s = Utils.GetSQLiteConnectionString();
 
-        //    bool isDevEnv = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == DevEnvValue ? true : false;
-        //    // One time copy of the DB (per deployment)
-        //    if (!isDevEnv && !File.Exists(Azure_DBPath))
-        //        CopyDb();
+            //    bool isDevEnv = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == DevEnvValue ? true : false;
+            //    // One time copy of the DB (per deployment)
+            //    if (!isDevEnv && !File.Exists(Azure_DBPath))
+            //        CopyDb();
 
 
-        //    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        //    {
-        //        Console.WriteLine("Dev dbContext");
-        //        options.UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};");
-        //    });
+            //    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //    {
+            //        Console.WriteLine("Dev dbContext");
+            //        options.UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};");
+            //    });
 
-        //    //builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(
-        //    //         (s, o) => o
-        //    //           .UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};")
-        //    //           //.UseLoggerFactory(s.GetRequiredService<ILoggerFactory>())
-        //    //           );
+            //    //builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(
+            //    //         (s, o) => o
+            //    //           .UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};")
+            //    //           //.UseLoggerFactory(s.GetRequiredService<ILoggerFactory>())
+            //    //           );
         }
 
         //public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)

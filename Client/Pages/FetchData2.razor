@@ -3,7 +3,7 @@
 
 @inject HttpClient Http
 
-@*<h1>Students</h1>
+<h1>Students</h1>
 
 @if (students.Length < 1)
 {
@@ -26,7 +26,7 @@ else
         <h2>@exception.InnerException.Message</h2>
     }
     
-}*@
+}
   
 <h2>Connection 2.2</h2>
 @connection
@@ -43,9 +43,12 @@ else
     {
         try
         {
-            //students = await Http.GetFromJsonAsync<Student[]>("/api/Students") ?? new Student[] { };
 
             connection = await Http.GetStringAsync("/api/utils") ?? String.Empty;
+
+            students = await Http.GetFromJsonAsync<Student[]>("/api/Students") ?? new Student[] { };
+
+           
 
             Console.WriteLine(Environment.GetEnvironmentVariable("HOME") ?? "");
         }
