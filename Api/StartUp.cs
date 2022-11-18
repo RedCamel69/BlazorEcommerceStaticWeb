@@ -24,10 +24,14 @@ namespace BlazorEcommerceStaticWebApp.Api
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            File.Copy("D:\\home\\site\\wwwroot\\school.db", "D:\\home\\school.db");
+            File.SetAttributes("D:\\home\\school.db", FileAttributes.Normal);
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {               
                 //options.UseSqlite(Utils.GetSQLiteConnectionString());
-                options.UseSqlite("Data source = D:\\home\\site\\wwwroot\\school.db");
+                options.UseSqlite("Data source = D:\\home\\school.db");
+                //options.UseSqlite("Data source = D:\\home\\site\\wwwroot\\school.db");
             });
 
             //    var s = Utils.GetSQLiteConnectionString();
