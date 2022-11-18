@@ -22,6 +22,9 @@ namespace BlazorEcommerceStaticWebApp.Api
         }
         public override void Configure(IFunctionsHostBuilder builder)
         {
+
+           
+
             //bool isDevEnv = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == DevEnvValue ? true : false;
 
             //if(!isDevEnv && !File.Exists(Azure_DBPath))
@@ -29,8 +32,8 @@ namespace BlazorEcommerceStaticWebApp.Api
             //    CopyDb();
             //}
 
-           // if (isDevEnv)
-           // {
+            // if (isDevEnv)
+            // {
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     Console.WriteLine("Dev dbContext");

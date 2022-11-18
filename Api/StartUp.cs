@@ -11,42 +11,45 @@ namespace BlazorEcommerceStaticWebApp.Api
 {
     public class StartUp : FunctionsStartup
     {
-        const string DevEnvValue = "Development";
-        const string DBPath = "./appdata/school.db";
-        // public in case we need it elsewhere in the API
-        public const string Azure_DBPath = "D:/home/school.db";
+        //const string DevEnvValue = "Development";
+        //const string DBPath = "./appdata/school.db";
+        //// public in case we need it elsewhere in the API
+        //public const string Azure_DBPath = "d:\\home\\site\\wwwroot\\school.db";
 
-        private static void CopyDb()
-        {
-            File.Copy(DBPath, Azure_DBPath);
-            File.SetAttributes(Azure_DBPath, FileAttributes.Normal);
-        }
+        //private static void CopyDb()
+        //{
+        //    File.Copy(DBPath, Azure_DBPath);
+        //    File.SetAttributes(Azure_DBPath, FileAttributes.Normal);
+        //}
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            bool isDevEnv = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == DevEnvValue ? true : false;
-            // One time copy of the DB (per deployment)
-            if (!isDevEnv && !File.Exists(Azure_DBPath))
-                CopyDb();
+
+        //    var s = Utils.GetSQLiteConnectionString();
+
+        //    bool isDevEnv = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == DevEnvValue ? true : false;
+        //    // One time copy of the DB (per deployment)
+        //    if (!isDevEnv && !File.Exists(Azure_DBPath))
+        //        CopyDb();
 
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                Console.WriteLine("Dev dbContext");
-                options.UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};");
-            });
+        //    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        //    {
+        //        Console.WriteLine("Dev dbContext");
+        //        options.UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};");
+        //    });
 
-            //builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(
-            //         (s, o) => o
-            //           .UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};")
-            //           //.UseLoggerFactory(s.GetRequiredService<ILoggerFactory>())
-            //           );
+        //    //builder.Services.AddPooledDbContextFactory<ApplicationDbContext>(
+        //    //         (s, o) => o
+        //    //           .UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};")
+        //    //           //.UseLoggerFactory(s.GetRequiredService<ILoggerFactory>())
+        //    //           );
         }
 
-        public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
-        {
-            base.ConfigureAppConfiguration(builder);
-        }
+        //public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
+        //{
+        //    base.ConfigureAppConfiguration(builder);
+        //}
 
     }
 }
