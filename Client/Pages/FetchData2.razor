@@ -28,8 +28,7 @@ else
     
 }
   
-<h2>Connection 2.5</h2>
-@connection
+
 
 @code {
 
@@ -44,7 +43,7 @@ else
         try
         {
 
-            connection = await Http.GetStringAsync("/api/utils") ?? String.Empty;
+            //connection = await Http.GetStringAsync("/api/utils") ?? String.Empty;
 
             students = await Http.GetFromJsonAsync<Student[]>("/api/Students") ?? new Student[] { };
 
