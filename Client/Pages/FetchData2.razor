@@ -28,7 +28,8 @@ else
     
 }
   
-
+<h2>Home</h2>
+@home
 
 @code {
 
@@ -38,10 +39,14 @@ else
 
     private string? connection;
 
+    private string? home;
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
+
+            home = Environment.GetEnvironmentVariable("HOME") ?? "";
 
             //connection = await Http.GetStringAsync("/api/utils") ?? String.Empty;
 
@@ -49,7 +54,7 @@ else
 
            
 
-            Console.WriteLine(Environment.GetEnvironmentVariable("HOME") ?? "");
+            
         }
         catch (Exception ex)
         {
