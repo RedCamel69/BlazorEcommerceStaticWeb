@@ -24,8 +24,12 @@ namespace BlazorEcommerceStaticWebApp.Api
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            File.Copy("D:\\home\\site\\wwwroot\\school2.db", "D:\\home\\school2.db");
-            File.SetAttributes("D:\\home\\school2.db", FileAttributes.Normal);
+            if (!File.Exists("D:\\home\\school2.db"))
+            {
+
+                File.Copy("D:\\home\\site\\wwwroot\\school2.db", "D:\\home\\school2.db");
+                File.SetAttributes("D:\\home\\school2.db", FileAttributes.Normal);
+            }
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {               
