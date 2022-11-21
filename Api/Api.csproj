@@ -17,7 +17,7 @@
 	  <ProjectReference Include="..\Shared\Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Update="appData\school.db">
+		<None Update="appData\school2.db">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="host.json">
