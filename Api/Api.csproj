@@ -29,7 +29,7 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<None Update="school.db">
+		<None Update="school2.db">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
