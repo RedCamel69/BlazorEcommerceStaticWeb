@@ -5,12 +5,14 @@ using BlazorEcommerceStaticWebApp.Api.Data;
 using System.IO;
 using System;
 using Microsoft.Extensions.Logging;
+using Api.Services.ProductService;
 
 [assembly: FunctionsStartup(typeof(BlazorEcommerceStaticWebApp.Api.StartUp))]
 namespace BlazorEcommerceStaticWebApp.Api
 {
     public class StartUp : FunctionsStartup
     {
+
         //const string DevEnvValue = "Development";
         //const string DBPath = "./appdata/school.db";
         //// public in case we need it elsewhere in the API
@@ -24,19 +26,30 @@ namespace BlazorEcommerceStaticWebApp.Api
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            if (!File.Exists("D:\\home\\school2.db"))
+            if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") != "Development")
             {
+                if (!File.Exists("D:\\home\\school2.db"))
+                {
 
-                File.Copy("D:\\home\\site\\wwwroot\\school2.db", "D:\\home\\school2.db");
-                File.SetAttributes("D:\\home\\school2.db", FileAttributes.Normal);
+                    File.Copy("D:\\home\\site\\wwwroot\\school2.db", "D:\\home\\school2.db");
+                    File.SetAttributes("D:\\home\\school2.db", FileAttributes.Normal);
+                }
+
+                builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                {
+                    //options.UseSqlite(Utils.GetSQLiteConnectionString());
+                    options.UseSqlite("Data source = D:\\home\\school2.db");
+                    //options.UseSqlite("Data source = D:\\home\\site\\wwwroot\\school.db");
+                });
             }
+            else
+            {
+                builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                {
+                    options.UseSqlite(Utils.GetSQLiteConnectionString());
+                });
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {               
-                //options.UseSqlite(Utils.GetSQLiteConnectionString());
-                options.UseSqlite("Data source = D:\\home\\school2.db");
-                //options.UseSqlite("Data source = D:\\home\\site\\wwwroot\\school.db");
-            });
+            }
 
             //    var s = Utils.GetSQLiteConnectionString();
 
@@ -57,6 +70,9 @@ namespace BlazorEcommerceStaticWebApp.Api
             //    //           .UseSqlite($"data source={(isDevEnv ? DBPath : Azure_DBPath)};")
             //    //           //.UseLoggerFactory(s.GetRequiredService<ILoggerFactory>())
             //    //           );
+
+            builder.Services.AddScoped<IProductService, ProductService>();
+
         }
 
         //public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
