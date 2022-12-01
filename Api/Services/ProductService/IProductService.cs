@@ -9,11 +9,21 @@ namespace Api.Services.ProductService
 {
     public interface IProductService
     {
-        Task<ServiceResponse<List<Product>>> GetProducts();
+        ServiceResponse<List<Product>> GetProducts();
+
+        Task<ServiceResponse<List<Product>>> GetProductsAsync();
+
+        ServiceResponse<List<Product>> GetProductsByTitle();
+
+        Task<ServiceResponse<List<Product>>> GetProductsByTitleASync();
 
         Task<ServiceResponse<Product>> GetProductAsync(int productId);
 
-        Task<ServiceResponse<List<Product>>> GetProductsByCategory(string categoryUrl);
+        ServiceResponse<Product> GetProduct(int productId);
+
+        Task<ServiceResponse<List<Product>>> GetProductsByCategoryAsync(string categoryUrl);
+
+        ServiceResponse<List<Product>> GetProductsByCategory(string categoryUrl);
 
         Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page);
 
