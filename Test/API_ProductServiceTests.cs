@@ -218,6 +218,7 @@ namespace Test
             Assert.True(product.Data.Title == "ZZZ");
 
         }
+
         //  todo async ef core unit testing
         //[Fact]
         //public async void GetProductsAsync_returns_list_of_products()
@@ -247,6 +248,100 @@ namespace Test
         //    Assert.Equal("ZZZ", products.Data[2].Title);
         //}
 
+        [Fact]
+        public async void CreateProduct_returns_service_response_containing_new_product()
+        {
 
+            var data = new List<Product>
+                {
+                    new Product {   Id = 1, Title = "BBB", Category= new Category(){  Id=1, Url = "TestCat1"}, Variants= new List<ProductVariant>() , Visible=true, Images=new List<Image>()},
+                    new Product {   Id = 2, Title = "ZZZ", Category= new Category(){  Id=1, Url = "TestCat3"}, Variants= new List<ProductVariant>() , Visible = false, Images=new List<Image>()},
+                    new Product {Id = 2, Title = "AAA", Category = new Category() { Id = 1, Url = "TestCat3" }, Variants = new List < ProductVariant >(), Visible = true, Images=new List<Image>()}
+                }.AsQueryable();
+
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockHttpContextAccessor.Setup(h => h.HttpContext.User.IsInRole("Admin")).Returns(true);
+
+            var mockSet = new Mock<DbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            var mockContext = new Mock<ApplicationDbContext>();
+            mockContext.Setup(c => c.Products).Returns(mockSet.Object);
+            var service = new ProductService(mockContext.Object, mockHttpContextAccessor.Object);
+
+            var res = service.CreateProduct(new Product() { 
+                Title = "Test Title"  ,
+                Category = new Category() { Name="Test Category"}
+            });
+
+            Assert.True(res.Result.Data.Title == "Test Title");
+
+
+
+        }
+
+        [Fact]
+        public async void DeleteProduct_returns_service_response_containing_boolean_flag()
+        {
+
+            var data = new List<Product>
+                {
+                    new Product {   Id = 1, Title = "BBB", Category= new Category(){  Id=1, Url = "TestCat1"}, Variants= new List<ProductVariant>() , Visible=true, Images=new List<Image>()},
+                    new Product {   Id = 2, Title = "ZZZ", Category= new Category(){  Id=3, Url = "TestCat3"}, Variants= new List<ProductVariant>() , Visible = false, Images=new List<Image>()},
+                    new Product {Id = 3, Title = "AAA", Category = new Category() { Id = 3, Url = "TestCat3" }, Variants = new List < ProductVariant >(), Visible = true, Images=new List<Image>()}
+                }.AsQueryable();
+
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockHttpContextAccessor.Setup(h => h.HttpContext.User.IsInRole("Admin")).Returns(true);
+
+            var mockSet = new Mock<DbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            var mockContext = new Mock<ApplicationDbContext>();
+            mockContext.Setup(c => c.Products).Returns(mockSet.Object);
+            var service = new ProductService(mockContext.Object, mockHttpContextAccessor.Object);
+
+            var res = service.DeleteProduct(1);
+
+            Assert.True(res.Data == true);
+
+        }
+
+        [Fact]
+        public async void DeleteProduct_sets_Deleted_Value_On_Product()
+        {
+
+            var data = new List<Product>
+                {
+                    new Product {   Id = 1, Title = "BBB", Category= new Category(){  Id=1, Url = "TestCat1"}, Variants= new List<ProductVariant>() , Visible=true, Images=new List<Image>()},
+                    new Product {   Id = 2, Title = "ZZZ", Category= new Category(){  Id=3, Url = "TestCat3"}, Variants= new List<ProductVariant>() , Visible = false, Images=new List<Image>()},
+                    new Product {Id = 3, Title = "AAA", Category = new Category() { Id = 3, Url = "TestCat3" }, Variants = new List < ProductVariant >(), Visible = true, Images=new List<Image>()}
+                }.AsQueryable();
+
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockHttpContextAccessor.Setup(h => h.HttpContext.User.IsInRole("Admin")).Returns(true);
+
+            var mockSet = new Mock<DbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            var mockContext = new Mock<ApplicationDbContext>();
+            mockContext.Setup(c => c.Products).Returns(mockSet.Object);
+            var service = new ProductService(mockContext.Object, mockHttpContextAccessor.Object);
+
+            var res = service.DeleteProduct(1);
+            var expectedDeletedProduct = mockContext.Object.Products.FirstOrDefault(p => p.Id == 1);
+
+            Assert.True(expectedDeletedProduct !=null);
+            Assert.True(expectedDeletedProduct.Deleted == true);
+        }
     }
 }

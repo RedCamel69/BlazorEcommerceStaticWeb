@@ -35,6 +35,7 @@ namespace Api.Services.ProductService
 
         Task<ServiceResponse<Product>> CreateProduct(Product product);
         Task<ServiceResponse<Product>> UpdateProduct(Product product);
-        Task<ServiceResponse<bool>> DeleteProduct(int productId);
+        ServiceResponse<bool> DeleteProduct(int productId);
+        Task<ServiceResponse<bool>> DeleteProductAsync(int productId);
     }
 }

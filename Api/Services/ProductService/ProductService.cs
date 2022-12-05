@@ -24,14 +24,67 @@ namespace Api.Services.ProductService
             _context = context;
             _httpContext = httpContext;
         }
-        public Task<ServiceResponse<Product>> CreateProduct(Product product)
+        public async Task<ServiceResponse<Product>> CreateProduct(Product product)
         {
-            throw new NotImplementedException();
+            try
+            {
+                foreach (var variant in product.Variants)
+                {
+                    variant.ProductType = null; //ef workaround to stop new product type being created
+                }
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+                return new ServiceResponse<Product> { Data = product };
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<Product>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                    Data = null
+                };
+            }
         }
 
-        public Task<ServiceResponse<bool>> DeleteProduct(int productId)
+        public ServiceResponse<bool> DeleteProduct(int productId)
         {
-            throw new NotImplementedException();
+            //var dbProduct = _context.Products.Find(productId);
+            // Find not working with tests as we merely have a list of objects but no primary key
+            var dbProduct = _context.Products.FirstOrDefault(x=>x.Id==productId);
+            if (dbProduct == null)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "Product not found."
+                };
+            }
+
+            dbProduct.Deleted = true;
+
+            _context.SaveChangesAsync();
+            return new ServiceResponse<bool> { Data = true };
+        }
+
+        public async Task<ServiceResponse<bool>> DeleteProductAsync(int productId)
+        {
+            var dbProduct = await _context.Products.FindAsync(productId);
+            if (dbProduct == null)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "Product not found."
+                };
+            }
+
+            dbProduct.Deleted = true;
+
+            await _context.SaveChangesAsync();
+            return new ServiceResponse<bool> { Data = true };
         }
 
         public Task<ServiceResponse<List<Product>>> GetAdminProducts()
