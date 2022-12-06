@@ -343,5 +343,65 @@ namespace Test
             Assert.True(expectedDeletedProduct !=null);
             Assert.True(expectedDeletedProduct.Deleted == true);
         }
+
+        [Fact]
+        public async void GetAdminProducts_returns_expected_products()
+        {
+            //expected to return all products not deleted irrespective of visible flag
+            var data = new List<Product>
+                {
+                    new Product {   Id = 1, Title = "BBB", Category= new Category(){  Id=1, Url = "TestCat1"}, Variants= new List<ProductVariant>() , Visible=true, Images=new List<Image>(), Deleted=false},
+                    new Product {   Id = 2, Title = "ZZZ", Category= new Category(){  Id=1, Url = "TestCat3"}, Variants= new List<ProductVariant>() , Visible = false, Images=new List<Image>(), Deleted = true},
+                    new Product {Id = 2, Title = "AAA", Category = new Category() { Id = 1, Url = "TestCat3" }, Variants = new List < ProductVariant >(), Visible = false, Images=new List<Image>(), Deleted = false}
+                }.AsQueryable();
+
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockHttpContextAccessor.Setup(h => h.HttpContext.User.IsInRole("Admin")).Returns(true);
+
+            var mockSet = new Mock<DbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            var mockContext = new Mock<ApplicationDbContext>();
+            mockContext.Setup(c => c.Products).Returns(mockSet.Object);
+
+            var service = new ProductService(mockContext.Object, mockHttpContextAccessor.Object);
+            var product = await service.GetAdminProducts();
+
+            Assert.True(product.Data.Count == 2);
+        }
+
+
+
+        [Fact]
+        public async void GetFeaturedProducts_returns_expected_products()
+        {
+            //expected to return all products with featured flag not not deleted and visible 
+            var data = new List<Product>
+                {
+                    new Product {   Id = 1, Title = "BBB", Category= new Category(){  Id=1, Url = "TestCat1"}, Variants= new List<ProductVariant>() , Visible=true, Images=new List<Image>(), Deleted=false, Featured=true},
+                    new Product {   Id = 2, Title = "ZZZ", Category= new Category(){  Id=1, Url = "TestCat3"}, Variants= new List<ProductVariant>() , Visible = false, Images=new List<Image>(), Deleted = true, Featured=true},
+                    new Product {Id = 2, Title = "AAA", Category = new Category() { Id = 1, Url = "TestCat3" }, Variants = new List < ProductVariant >(), Visible = false, Images=new List<Image>(), Deleted = false,Featured=true}
+                }.AsQueryable();
+
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockHttpContextAccessor.Setup(h => h.HttpContext.User.IsInRole("Admin")).Returns(true);
+
+            var mockSet = new Mock<DbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            var mockContext = new Mock<ApplicationDbContext>();
+            mockContext.Setup(c => c.Products).Returns(mockSet.Object);
+
+            var service = new ProductService(mockContext.Object, mockHttpContextAccessor.Object);
+            var product = service.GetFeaturedProducts();
+
+            Assert.True(product.Data.Count == 1);
+        }
     }
-}
+} 

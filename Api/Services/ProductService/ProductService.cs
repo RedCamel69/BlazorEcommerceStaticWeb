@@ -87,14 +87,61 @@ namespace Api.Services.ProductService
             return new ServiceResponse<bool> { Data = true };
         }
 
-        public Task<ServiceResponse<List<Product>>> GetAdminProducts()
+        public async Task<ServiceResponse<List<Product>>> GetAdminProducts()
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = _context.Products
+          .Where(p => !p.Deleted)
+          .Include(p => p.Variants.Where(v => !v.Deleted))
+          .ThenInclude(v => v.ProductType)
+          .Include(p => p.Images)
+          .ToList()
+            };
+
+            return response;
         }
 
-        public Task<ServiceResponse<List<Product>>> GetFeaturedProducts()
+        public async Task<ServiceResponse<List<Product>>> GetAdminProductsAsync()
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = await _context.Products
+          .Where(p => !p.Deleted)
+          .Include(p => p.Variants.Where(v => !v.Deleted))
+          .ThenInclude(v => v.ProductType)
+          .Include(p => p.Images)
+          .ToListAsync()
+            };
+
+            return response;
+        }
+        public ServiceResponse<List<Product>> GetFeaturedProducts()
+        {
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data =   _context.Products
+               .Where(x => x.Featured == true && !x.Deleted && x.Visible)
+               .Include(p => p.Variants.Where(v => !v.Deleted && v.Visible))
+               .Include(p => p.Images)
+               .ToList()
+            };
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<Product>>> GetFeaturedProductsAsync()
+        {
+            var response = new ServiceResponse<List<Product>>
+            {
+                Data = await _context.Products
+              .Where(x => x.Featured == true && !x.Deleted && x.Visible)
+              .Include(p => p.Variants.Where(v => !v.Deleted && v.Visible))
+              .Include(p => p.Images)
+              .ToListAsync()
+            };
+
+            return response;
         }
 
         public async Task<ServiceResponse<Product>> GetProductAsync(int productId)
@@ -269,6 +316,6 @@ namespace Api.Services.ProductService
             throw new NotImplementedException();
         }
 
-       
+        
     }
 }
