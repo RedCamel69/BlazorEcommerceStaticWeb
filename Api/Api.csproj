@@ -17,8 +17,8 @@
 	  <ProjectReference Include="..\Shared\Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Update="appData\school2.db">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<None Update="ecommerce.db">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="host.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -29,8 +29,6 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<None Update="school2.db">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
+	  <Folder Include="Migrations\" />
 	</ItemGroup>
 </Project>

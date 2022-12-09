@@ -4,18 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace BlazorEcommerceStaticWebApp.Shared
 {
+    [Table("ProductVariants")]
     public class ProductVariant
     {
-        [JsonIgnore]
-        public Product? Product { get; set; }
-
-        [Key]
-        public int Id { get; set; }
+       [JsonIgnore]
+      //public Product? Product { get; set; }
 
         public int ProductId { get; set; }
 

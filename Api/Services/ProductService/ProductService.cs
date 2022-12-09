@@ -89,17 +89,32 @@ namespace Api.Services.ProductService
 
         public async Task<ServiceResponse<List<Product>>> GetAdminProducts()
         {
-            var response = new ServiceResponse<List<Product>>
-            {
-                Data = _context.Products
-          .Where(p => !p.Deleted)
-          .Include(p => p.Variants.Where(v => !v.Deleted))
-          .ThenInclude(v => v.ProductType)
-          .Include(p => p.Images)
-          .ToList()
-            };
+            var response = new ServiceResponse<List<Product>>();
 
-            return response;
+            try
+            {
+                response = new ServiceResponse<List<Product>>
+                {
+                    Data = _context.Products
+              .Where(p => !p.Deleted)
+              .Include(p => p.Variants.Where(v => !v.Deleted))
+              .ThenInclude(v => v.ProductType)
+              .Include(p => p.Images)
+              .ToList()
+                };
+
+                return response;
+            }
+
+            catch(Exception ex)
+            {
+                return new ServiceResponse<List<Product>>
+                {
+                    Success = false,
+                    Message = ex.Message,
+                    Data = null
+                };
+            }
         }
 
         public async Task<ServiceResponse<List<Product>>> GetAdminProductsAsync()

@@ -2,6 +2,7 @@
 
 namespace BlazorEcommerceStaticWebApp.Shared
 {
+    [Table("ProductTypes")]
     public class ProductType
     {
         public int Id { get; set; }

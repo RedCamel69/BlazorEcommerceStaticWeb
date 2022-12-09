@@ -28,17 +28,17 @@ namespace BlazorEcommerceStaticWebApp.Api
         {
             if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") != "Development")
             {
-                if (!File.Exists("D:\\home\\school2.db"))
+                if (!File.Exists("D:\\home\\ecommerce.db"))
                 {
 
-                    File.Copy("D:\\home\\site\\wwwroot\\school2.db", "D:\\home\\school2.db");
-                    File.SetAttributes("D:\\home\\school2.db", FileAttributes.Normal);
+                    File.Copy("D:\\home\\site\\wwwroot\\ecommerce.db", "D:\\home\\ecommerce.db");
+                    File.SetAttributes("D:\\home\\ecommerce.db", FileAttributes.Normal);
                 }
 
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     //options.UseSqlite(Utils.GetSQLiteConnectionString());
-                    options.UseSqlite("Data source = D:\\home\\school2.db");
+                    options.UseSqlite("Data source = D:\\home\\ecommerce.db");
                     //options.UseSqlite("Data source = D:\\home\\site\\wwwroot\\school.db");
                 });
             }

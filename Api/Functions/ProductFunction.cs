@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using Api.Services.ProductService;
 
-namespace Api
+namespace Api.Functions
 {
     public class ProductFunction
     {
@@ -33,6 +33,19 @@ namespace Api
            
 
             return new OkObjectResult(_productService.GetProducts());
+        }
+
+        [FunctionName("GetAdminProducts")]
+        public IActionResult GetAdminProducts(
+       [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAdminProducts")] HttpRequest req,
+       ILogger log)
+        {
+
+            log.LogInformation("C# HTTP GET trigger function processed api/students request.");
+
+            var res = _productService.GetAdminProducts();
+
+             return new OkObjectResult(res);
         }
     }
 }
