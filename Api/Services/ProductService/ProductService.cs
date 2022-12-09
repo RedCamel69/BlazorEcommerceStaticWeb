@@ -249,6 +249,7 @@ namespace Api.Services.ProductService
                 Data = await _context.Products
                    .Where(p => !p.Deleted && p.Visible)
                    .Include(_ => _.Variants.Where(v => !v.Deleted && v.Visible))
+                    .ThenInclude(v => v.ProductType)
                     .Include(p => p.Images)
                    .ToListAsync()
 
