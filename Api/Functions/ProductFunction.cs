@@ -32,12 +32,16 @@ namespace Api.Functions
         }
 
         [FunctionName("ProductsAsync")]        
-        public IActionResult GetProductsAsync(
+        public async Task<IActionResult> GetProductsAsync(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req,
         ILogger log)
         {
             log.LogInformation("C# HTTP GET trigger function processed api/productsasync request.");
-            return new OkObjectResult(_productService.GetProductsAsync());
+
+            //var res = _productService.GetProductsAsync().Result;
+            var res = await _productService.GetProductsAsync();
+
+            return new OkObjectResult(res);
         }
 
         [FunctionName("GetAdminProducts")]
@@ -57,6 +61,26 @@ namespace Api.Functions
         {
             log.LogInformation("C# HTTP GET trigger function processed api/GetAdminProducts request.");
             var res = _productService.GetAdminProductsAsync();
+            return new OkObjectResult(res);
+        }
+
+        [FunctionName("GetFeatureProducts")]
+        public IActionResult GetFeaturedProducts(
+      [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetFeaturedProducts")] HttpRequest req,
+           ILogger log)
+        {
+            log.LogInformation("C# HTTP GET trigger function processed api/GetFeaturedProducts request.");
+            var res = _productService.GetFeaturedProducts();
+            return new OkObjectResult(res);
+        }
+
+        [FunctionName("GetFeatureProductsAsync")]
+        public IActionResult GetFeatureProductsAsync(
+     [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetFeatureProductsAsync")] HttpRequest req,
+         ILogger log)
+        {
+            log.LogInformation("C# HTTP GET trigger function processed api/GetFeatureProductsAsync request.");
+            var res = _productService.GetFeaturedProductsAsync();
             return new OkObjectResult(res);
         }
     }

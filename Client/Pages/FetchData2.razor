@@ -5,15 +5,15 @@
 
 <h1>Students</h1>
 
-@if (students.Length < 1)
+@if (featuredProducts.Count < 1)
 {
-    <h1>No students!</h1>
+    <h1>No products!</h1>
 }
 else
 {
-    foreach (Student s in students)
+    foreach (Product p in featuredProducts)
     {
-        <h3>@s.School</h3>
+        <h3>@p.Title</h3>
     }
 }
 
@@ -33,7 +33,7 @@ else
 
 @code {
 
-    private Student[] students = new Student[] { };
+    private List<Product> featuredProducts = new List<Product> { };
 
     private Exception? exception;
 
@@ -50,7 +50,16 @@ else
 
             //connection = await Http.GetStringAsync("/api/utils") ?? String.Empty;
 
-            students = await Http.GetFromJsonAsync<Student[]>("/api/Students") ?? new Student[] { };
+            //var res = await Http.GetStringAsync("/api/ProductsAsync");
+
+            var res = await Http.GetFromJsonAsync<ServiceResponse<List<Product>>>("/api/ProductsAsync");
+
+            if (res!= null &&  res.Success == true )
+            {
+                featuredProducts = res.Data ?? new List<Product> { };
+            }
+
+         
 
            
 
