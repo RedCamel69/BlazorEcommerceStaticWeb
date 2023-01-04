@@ -80,7 +80,7 @@ namespace Api.Functions
          ILogger log)
         {
             log.LogInformation("C# HTTP GET trigger function processed api/GetFeatureProductsAsync request.");
-            var res = _productService.GetFeaturedProductsAsync();
+            var res = _productService.GetFeaturedProductsAsync().Result;
             return new OkObjectResult(res);
         }
     }

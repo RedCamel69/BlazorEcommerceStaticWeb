@@ -14,7 +14,7 @@ namespace BlazorEcommerceStaticWebApp.Client.Services.ProductService
         }
         public List<Product> Products { get; set; } = new List<Product>();
         public List<Product> AdminProducts { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Message { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Message { get; set; } = "Loading New Products";
         public int CurrentPage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PageCount { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string LastSearchText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -44,7 +44,7 @@ namespace BlazorEcommerceStaticWebApp.Client.Services.ProductService
         public async Task GetProducts(string? categoryUrl = null)
         {
             var res = categoryUrl == null ?
-                await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/Product/featured")
+                await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/GetFeatureProductsAsync")
                 : await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/Product/Category/{categoryUrl}");
 
 
@@ -52,12 +52,17 @@ namespace BlazorEcommerceStaticWebApp.Client.Services.ProductService
             if (res != null && res.Data != null)
                 Products = res.Data;
 
-            CurrentPage = 1;
-            PageCount = 0;
+            //CurrentPage = 1;
+            //PageCount = 0;
 
             if (Products.Count == 0)
             {
                 Message = "No Products Found";
+            }
+
+            if (Products.Count > 0)
+            {
+                Message = "Products Found";
             }
 
             ProductsChanged.Invoke();
