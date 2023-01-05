@@ -10,45 +10,8 @@ Welcome to the Blazor Ecommerce Static Web App Experiment
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<center>Todays Top Products</center>
-@if(ProductService.Products == null || ProductService.Products.Count == 0)
-{
-    <span>@ProductService.Message</span>
-}
-else
-{
-    <div class="container">
-        @foreach(Product p in ProductService.Products)
-        {
-            if (p.Featured)
-            {
-                <div class="featured-product">
-                    <div>
-                        <a href="product/@p.Id">
-                            @if (!string.IsNullOrEmpty(p.ImageUrl))
-                            {
-                                <img src="@p.ImageUrl">
-                            }
-                            else if (p.Images.Count > 0)
-                            {
-                                <img src="@p.Images[0].Data" />
-                            }
-                        </a>
-                    </div>
-                    <h4><a href="product/@p.Id"/>@p.Title</h4>
-                    @if(p.Variants !=null && p.Variants.Count > 0)
-                    {
-                        <h5 class="price">
-                            $@p.Variants[0].Price
-                        </h5>
-                    }
-                </div>
+<FeaturedProducts></FeaturedProducts>
 
-             
-            }
-        }
-    </div>
-}
 
 
 @code {
@@ -61,11 +24,6 @@ else
     [Parameter]
     public int Page { get; set; } = 1;
 
-    protected override void OnInitialized()
-    {
-        ProductService.ProductsChanged += StateHasChanged;
-    }
-
     protected override async Task OnParametersSetAsync()
     {
         if (SearchText != null)
@@ -74,7 +32,7 @@ else
         }
         else
         {
-            await ProductService.GetProducts(CategoryUrl);          
+            await ProductService.GetProducts(CategoryUrl);
         }
     }
 }
