@@ -403,5 +403,36 @@ namespace Test
 
             Assert.True(product.Data.Count == 1);
         }
+
+
+        [Fact]
+        public void SearchProducts_returns_list_of_products()
+        {
+            var data = new List<Product>
+            {
+                new Product {   Id = 1, Title = "BBB", Description="Product Description 1" },
+                new Product {   Id = 2, Title = "ZZZ", Description="Product Description 2" },
+                new Product {   Id = 2, Title = "AAA" , Description="Product Description 3"}
+            }.AsQueryable();
+
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
+            var mockSet = new Mock<DbSet<Product>>();
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            var mockContext = new Mock<ApplicationDbContext>();
+            mockContext.Setup(c => c.Products).Returns(mockSet.Object);
+
+            var service = new ProductService(mockContext.Object, mockHttpContextAccessor.Object);
+            var products = service.SearchProducts("AAA", 1);
+
+            Assert.Equal(1, products.Data.Products.Count);
+            //Assert.AreEqual("AAA", blogs[0].Name); 
+            //Assert.AreEqual("BBB", blogs[1].Name);
+            //Assert.AreEqual("ZZZ", blogs[2].Name);
+        }
     }
 } 

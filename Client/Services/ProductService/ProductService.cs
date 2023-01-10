@@ -15,9 +15,9 @@ namespace BlazorEcommerceStaticWebApp.Client.Services.ProductService
         public List<Product> Products { get; set; } = new List<Product>();
         public List<Product> AdminProducts { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Message { get; set; } = "Loading New Products";
-        public int CurrentPage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int PageCount { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string LastSearchText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int CurrentPage { get; set; }
+        public int PageCount { get; set; }
+        public string LastSearchText { get; set; } = string.Empty;
 
         public event Action ProductsChanged;
 
@@ -68,17 +68,31 @@ namespace BlazorEcommerceStaticWebApp.Client.Services.ProductService
             ProductsChanged.Invoke();
         }
 
-        public Task<List<string>> GetProductSearchSuggestions(string searchText)
+        public async Task SearchProducts(string searchText, int page)
         {
-            throw new NotImplementedException();
-        }
+            LastSearchText = searchText;
+            var result = await _http.GetFromJsonAsync<ServiceResponse<ProductSearchResult>>
+                ($"api/SearchProductsAsync/{searchText}/{page}");
 
-        public Task SearchProducts(string searchText, int page)
-        {
-            throw new NotImplementedException();
+            if (result != null && result.Data != null)
+            {
+                Products = result.Data.Products;
+                CurrentPage = result.Data.CurrentPage;
+                PageCount = result.Data.Pages;
+            }
+
+            if (Products.Count == 0) Message = "No Products Found";
+
+            // todo reinsert event
+            ProductsChanged.Invoke();  
         }
 
         public Task<Product> UpdateProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<string>> GetProductSearchSuggestions(string searchText)
         {
             throw new NotImplementedException();
         }

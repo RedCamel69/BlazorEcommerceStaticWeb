@@ -83,5 +83,31 @@ namespace Api.Functions
             var res = _productService.GetFeaturedProductsAsync().Result;
             return new OkObjectResult(res);
         }
+
+        [FunctionName("SearchProducts")]
+        public IActionResult SearchProducts(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SearchProducts")] HttpRequest req,
+        ILogger log)
+        {
+            log.LogInformation("C# HTTP GET trigger function processed api/SearchProducts request.");
+            var res = _productService.SearchProducts(null,1);
+            return new OkObjectResult(res);
+        }
+
+        [FunctionName("SearchProductsAsync")]
+        public IActionResult SearchProductsAsync(
+   [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SearchProductsAsync/{searchtext}/{page}")] HttpRequest req,
+    string searchtext,
+    int page,
+       ILogger log)
+        {
+            var x = req;
+            var s = searchtext;
+            var p = page;
+
+            log.LogInformation("C# HTTP GET trigger function processed api/SearchProductsAsync request.");
+            var res = _productService.SearchProductsAsync(searchtext,page).Result;
+            return new OkObjectResult(res);
+        }
     }
 }

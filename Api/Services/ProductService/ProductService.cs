@@ -317,11 +317,7 @@ namespace Api.Services.ProductService
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page)
-        {
-            throw new NotImplementedException();
-        }
-
+    
         public Task<ServiceResponse<Product>> UpdateProduct(Product product)
         {
             throw new NotImplementedException();
@@ -332,6 +328,83 @@ namespace Api.Services.ProductService
             throw new NotImplementedException();
         }
 
-        
+        public ServiceResponse<ProductSearchResult> SearchProducts(string searchText, int page)
+        {
+            var pageResults = 2f;
+            //var pageCount = Math.Ceiling((FindProductsBySearchText(searchText)).Count / pageResults);
+            var pageCount = Math.Ceiling(
+                            _context.Products
+                            .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                                ||
+                                p.Description.ToLower().Contains(searchText.ToLower())
+                                && !p.Deleted && p.Visible
+                                )
+                            .Include(p => p.Variants).ToList().Count / pageResults
+                            );
+
+
+            var products = _context.Products
+                            .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                            ||
+                            p.Description.ToLower().Contains(searchText.ToLower())
+                            && !p.Deleted && p.Visible)
+                            .Include(p => p.Variants)
+                             .Include(p => p.Images)
+                            .Skip((page - 1) * (int)pageResults)
+                            .Take((int)pageResults)
+                            .ToList();
+
+            var response = new ServiceResponse<ProductSearchResult>
+            {
+                Data = new ProductSearchResult
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                }
+            };
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<ProductSearchResult>> SearchProductsAsync(string searchText, int page)
+        {
+            var pageResults = 2f;
+            //var pageCount = Math.Ceiling((FindProductsBySearchText(searchText)).Count / pageResults);
+            var pageCount = Math.Ceiling(
+                            _context.Products
+                            .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                                ||
+                                p.Description.ToLower().Contains(searchText.ToLower())
+                                && !p.Deleted && p.Visible
+                                )
+                            .Include(p => p.Variants).ToList().Count / pageResults
+                            );
+
+
+            var products = await _context.Products
+                            .Where(p => p.Title.ToLower().Contains(searchText.ToLower())
+                            ||
+                            p.Description.ToLower().Contains(searchText.ToLower())
+                            && !p.Deleted && p.Visible)
+                            .Include(p => p.Variants)
+                             .Include(p => p.Images)
+                            .Skip((page - 1) * (int)pageResults)
+                            .Take((int)pageResults)
+                            .ToListAsync();
+
+            var response = new ServiceResponse<ProductSearchResult>
+            {
+                Data = new ProductSearchResult
+                {
+                    Products = products,
+                    CurrentPage = page,
+                    Pages = (int)pageCount
+                }
+            };
+
+            return response;
+        }
     }
+    
 }

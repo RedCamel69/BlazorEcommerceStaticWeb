@@ -1,17 +1,18 @@
 ﻿@inject IProductService ProductService
 
 @page "/"
+@page "/{SearchText}"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Blazor Static Web Shop (SQLITE)</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to the Blazor Ecommerce Static Web App Experiment
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-<FeaturedProducts></FeaturedProducts>
-
+@if(SearchText == null && CategoryUrl == null)
+{
+    <FeaturedProducts></FeaturedProducts>
+}
+else
+{
+<ProductList></ProductList>    
+}
 
 
 @code {

@@ -25,7 +25,9 @@ namespace Api.Services.ProductService
 
         ServiceResponse<List<Product>> GetProductsByCategory(string categoryUrl);
 
-        Task<ServiceResponse<ProductSearchResult>> SearchProducts(string searchText, int page);
+        ServiceResponse<ProductSearchResult> SearchProducts(string searchText, int page);
+
+        Task<ServiceResponse<ProductSearchResult>> SearchProductsAsync(string searchText, int page);
 
         Task<ServiceResponse<List<string>>> GetProductSearchSuggestions(string searchText);
 
