@@ -43,7 +43,7 @@ namespace Test
             var service = new ProductService(mockContext.Object, mockHttpContextAccessor.Object);
             var products = service.GetProducts();
 
-            Assert.True(products.GetType().Name.Contains("ServiceResponse"));
+            Assert.Contains("ServiceResponse", products.GetType().Name);
         }
 
         [Fact]

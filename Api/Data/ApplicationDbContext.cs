@@ -11,7 +11,7 @@ public class ApplicationDbContext : DbContext
    
     public virtual DbSet<Product> Products { get; set; }
 
-    public DbSet<Category> Categories { get; set; }
+    public virtual DbSet<Category> Categories { get; set; }
 
     public DbSet<ProductType> ProductTypes { get; set; }
 

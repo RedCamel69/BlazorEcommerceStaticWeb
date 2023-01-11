@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using Microsoft.Extensions.Logging;
 using Api.Services.ProductService;
+using Api.Services.CategoryService;
 
 [assembly: FunctionsStartup(typeof(BlazorEcommerceStaticWebApp.Api.StartUp))]
 namespace BlazorEcommerceStaticWebApp.Api
@@ -72,6 +73,7 @@ namespace BlazorEcommerceStaticWebApp.Api
             //    //           );
 
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
         }
 
