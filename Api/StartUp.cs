@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿global using Microsoft.EntityFrameworkCore;
+global using BlazorEcommerceStaticWebApp.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using BlazorEcommerceStaticWebApp.Api.Data;

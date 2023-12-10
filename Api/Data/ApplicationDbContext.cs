@@ -13,7 +13,7 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
-    public DbSet<ProductType> ProductTypes { get; set; }
+    public virtual DbSet<ProductType> ProductTypes { get; set; }
 
     public DbSet<ProductVariant> ProductVariants { get; set; }
 
